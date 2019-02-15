@@ -33,12 +33,19 @@ export default {
       // console.log(res)
       const {
         data: {
-          // data
+          data: {token},
           meta: { msg, status }
         }
       } = res
-      
+
       if (status === 200) {
+        // 把正确用户的token保存起来
+        // set存值
+        localStorage.setItem('token', token)
+
+        // 测试get取值
+        // const a = localStorage.getItem('token')
+        // console.log(a)
         // 渲染home组件 home.vue 改标识 js编程导航
         this.$router.push({
           name: 'home'
