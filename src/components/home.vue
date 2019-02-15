@@ -119,17 +119,17 @@ export default {
     console.log(1111)
   },
   methods: {
-      handleLoginout(){
-        //   1.清除token
-        localStorage.clear()
-        // 2.来到登录
-        this.$router.push({
-            name:'login'
-        })
-        // 3.提示
-        this.$message.warning('退出成功')
-      }
-  },
+    handleLoginout () {
+      //   1.清除token
+      localStorage.clear()
+      // 2.来到登录
+      this.$router.push({
+        name: 'login'
+      })
+      // 3.提示
+      this.$message.warning('退出成功')
+    }
+  }
 }
 </script>
 
