@@ -29,10 +29,14 @@
       <!-- 日期格式处理 -->
       <!-- 过滤器的使用 -->
       <el-table-column label="创建日期" width="140">
-        <template slot-scope="scope">{{scope.row.create_time|fmtdate}}</template>
+        <template slot-scope="scope">{{scope .row.create_time|fmtdate}}</template>
       </el-table-column>
 
-      <el-table-column prop="name" label="用户状态" width="140"></el-table-column>
+      <el-table-column label="用户状态" width="140">
+        <template slot-scope="scope">
+          <el-switch v-model="scope.row.mg_state" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
+        </template>
+      </el-table-column>
       <el-table-column prop="name" label="操作" width="200"></el-table-column>
     </el-table>
 
