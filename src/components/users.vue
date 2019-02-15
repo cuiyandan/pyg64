@@ -36,14 +36,40 @@
 
 <script>
 export default {
-  data() {
+  data () {
     return {
-      query: "",
+      query: '',
+      pagenum: 1,
+      pagesize: 2,
       //   表格数据
       list: []
-    };
+    }
+  },
+  //   获取首屏数据的方法调用
+  created () {
+    this.getTableDate()
+  },
+  methods: {
+    //   获取表格数据
+    async getTableDate () {
+      // 除了登录请求，其他请求都需要授权  Authorization
+      // 发请求之前  设置请求头
+      // {
+      //   Authorization
+      // }
+
+      const AUTH_TOKEN = localStorage.getItem('token')
+      this.$http.defaults.headers.common['Authorization'] = AUTH_TOKEN
+
+      const res = await this.$http.get(
+        `users?query=${this.query}&pagenum=${this.pagenum}&pagesize=${
+          this.pagesize
+        }`
+      )
+      console.log(res) // 接口文档有额外的说明
+    }
   }
-};
+}
 </script>
 
 <style>
