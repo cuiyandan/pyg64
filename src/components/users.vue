@@ -20,6 +20,16 @@
     </el-row>
 
     <!-- 表格 -->
+    <el-table :data="list" style="width: 100%">
+      <el-table-column prop="name" label="#" width="80"></el-table-column>
+      <el-table-column prop="name" label="姓名" width="120"></el-table-column>
+      <el-table-column prop="name" label="邮箱" width="140"></el-table-column>
+      <el-table-column prop="name" label="电话" width="140"></el-table-column>
+      <el-table-column prop="name" label="创建日期" width="140"></el-table-column>
+      <el-table-column prop="name" label="用户状态" width="140"></el-table-column>
+      <el-table-column prop="name" label="操作" width="200"></el-table-column>
+    </el-table>
+
     <!-- 分页 -->
   </el-card>
 </template>
@@ -28,7 +38,9 @@
 export default {
   data() {
     return {
-      query: ""
+      query: "",
+      //   表格数据
+      list: []
     };
   }
 };
