@@ -93,6 +93,7 @@
             </el-menu-item>
       </el-submenu>
     </el-menu>
+
      </el-aside>
     <el-main class="main">Main</el-main>
   </el-container>
@@ -102,6 +103,19 @@
 <script>
 export default {
 
+    // 页面加载之前设置
+    // 必须先登录才能进入首页功能
+  beforeMount () {
+    if (!localStorage.getItem('token')) {
+      this.$router.push({
+        name: 'login'
+      })
+    this.$message.warning('请先登录')
+    }
+  },
+  mounted () {
+    console.log(1111)
+  }
 }
 </script>
 
