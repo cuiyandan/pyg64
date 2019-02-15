@@ -37,7 +37,10 @@ export default {
           }
         } = res
         if (status === 200) {
-          console.log('成功')
+          // 渲染home组件 home.vue 改标识 js编程导航
+          this.$router.push({
+            name:'home'
+          })
         } else {
           // 提示框
           this.$message.error(msg)
