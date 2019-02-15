@@ -25,27 +25,48 @@ export default {
   },
   methods: {
     // 登录请求
-    handleLogin () {
+    async handleLogin () {
       //   前提  服务器开启状态
       // 服务器支持跨域
-      this.$http.post(`login`, this.formdata).then(res => {
-        console.log(res)
-        const {
-          data: {
-
-            meta: { msg, status }
-          }
-        } = res
-        if (status === 200) {
-          // 渲染home组件 home.vue 改标识 js编程导航
-          this.$router.push({
-            name:'home'
-          })
-        } else {
-          // 提示框
-          this.$message.error(msg)
+      // ES7 async  await
+      const res = await this.$http.post(`login`, this.formdata)
+      // console.log(res)
+      const {
+        data: {
+          // data
+          meta: { msg, status }
         }
-      })
+      } = res
+      
+      if (status === 200) {
+        // 渲染home组件 home.vue 改标识 js编程导航
+        this.$router.push({
+          name: 'home'
+        })
+      } else {
+        // 提示框
+        this.$message.error(msg)
+      }
+
+      // .then(res => {
+      //   console.log(res)
+      //   const {
+      //     data: {
+      //       // data
+      //       meta: { msg, status }
+      //     }
+      //   } = res
+      //   if (status === 200) {
+      //     // 渲染home组件 home.vue 改标识 js编程导航
+      //     this.$router.push({
+      //       name:'home'
+      //     })
+
+      //   } else {
+      //     // 提示框
+      //     this.$message.error(msg)
+      //   }
+      // })
     }
   }
 }
