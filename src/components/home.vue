@@ -9,7 +9,7 @@
           <h2>电商后台管理系统</h2>
          </el-col>
          <el-col :span="1">
-          <a href="#" class="logout">退出</a>
+          <a href="#" class="logout" @click="handleLoginout">退出</a>
          </el-col>
        </el-row>
    </el-header>
@@ -103,19 +103,31 @@
 <script>
 export default {
 
-    // 页面加载之前设置
-    // 必须先登录才能进入首页功能
+  // 页面加载之前设置
+  // 必须先登录才能进入首页功能
   beforeMount () {
     if (!localStorage.getItem('token')) {
       this.$router.push({
         name: 'login'
       })
-    this.$message.warning('请先登录')
+      this.$message.warning('请先登录')
     }
   },
   mounted () {
     console.log(1111)
-  }
+  },
+  methods: {
+      handleLoginout(){
+        //   1.清除token
+        localStorage.clear()
+        // 2.来到登录
+        this.$router.push({
+            name:'login'
+        })
+        // 3.提示
+        this.$message.warning('退出成功')
+      }
+  },
 }
 </script>
 
