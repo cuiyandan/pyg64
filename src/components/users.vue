@@ -37,7 +37,13 @@
           <el-switch v-model="scope.row.mg_state" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
         </template>
       </el-table-column>
-      <el-table-column prop="name" label="操作" width="200"></el-table-column>
+      <el-table-column label="操作" width="200">
+        <template slot-scope="scope">
+          <el-button plain="true" size="mini" type="primary" icon="el-icon-edit" circle></el-button>
+          <el-button plain="true" size="mini" type="danger" icon="el-icon-delete" circle></el-button>
+          <el-button plain="true" size="mini" type="success" icon="el-icon-check" circle></el-button>
+        </template>
+      </el-table-column>
     </el-table>
 
     <!-- 分页 -->
@@ -79,7 +85,8 @@ export default {
       //   console.log(res) // 接口文档有额外的说明
       const {
         data,
-        meta: { msg, status }
+        // 有个msg被删了
+        meta: { status }
       } = res.data;
       if (status === 200) {
         this.list = data.users;
