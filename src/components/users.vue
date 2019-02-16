@@ -38,7 +38,8 @@
         </template>
       </el-table-column>
       <el-table-column label="操作" width="200">
-        <template slot-scope="scope">
+        <!--   下面template的属性 slot-scope="scope" -->
+        <template>
           <el-button plain="true" size="mini" type="primary" icon="el-icon-edit" circle></el-button>
           <el-button plain="true" size="mini" type="danger" icon="el-icon-delete" circle></el-button>
           <el-button plain="true" size="mini" type="success" icon="el-icon-check" circle></el-button>
@@ -47,6 +48,21 @@
     </el-table>
 
     <!-- 分页 -->
+    <!-- @size-change每页条数改变时触发 -->
+    <!-- @current-change 页码改变时触发 -->
+    <!-- :current-page 当前显示第几页 -->
+    <!-- :page-sizes每页条数的不同情况的数组 -->
+    <!-- layout  附加功能 -->
+    <!-- :total一共数据的条数 -->
+    <el-pagination
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="currentPage4"
+      :page-sizes="[100, 200, 300, 400]"
+      :page-size="100"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="400"
+    ></el-pagination>
   </el-card>
 </template>
 
