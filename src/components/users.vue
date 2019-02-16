@@ -11,8 +11,14 @@
     <el-row class="seartBox">
       <el-col>
         <!-- 搜索框 -->
-        <el-input class="seartinput" placeholder="请输入内容" v-model="query">
-          <el-button slot="append" icon="el-icon-search"></el-button>
+        <el-input
+          @clear="getAllUsers()"
+          clearable
+          class="seartinput"
+          placeholder="请输入内容"
+          v-model="query"
+        >
+          <el-button slot="append" icon="el-icon-search" @click="searchUser()"></el-button>
         </el-input>
         <!-- 添加按钮 -->
         <el-button type="primary">添加用户</el-button>
@@ -81,9 +87,22 @@ export default {
   },
   //   获取首屏数据的方法调用
   created() {
+    this.pagenum = 1;
     this.getTableDate();
   },
   methods: {
+    // 搜索清空时获取所有用户
+    getAllUsers() {
+      this.getTableDate();
+    },
+
+    // 搜索用户
+    searchUser() {
+      this.pagenum = 1;
+      // 按照quert关键字搜索
+      this.getTableDate();
+    },
+
     // 分页相关的方法
 
     handleSizeChange(val) {
