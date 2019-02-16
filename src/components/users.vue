@@ -97,9 +97,9 @@
 
 <script>
 export default {
-  data() {
+  data () {
     return {
-      query: "",
+      query: '',
       pagenum: 1,
       pagesize: 2,
       total: -1,
@@ -109,83 +109,83 @@ export default {
       dialogFormVisibleAdd: false,
       // 表单数据->发送post请求
       formdata: {
-        username: "",
-        password: "",
-        email: "",
-        mobile: ""
+        username: '',
+        password: '',
+        email: '',
+        mobile: ''
       }
-    };
+    }
   },
   //   获取首屏数据的方法调用
-  created() {
-    this.pagenum = 1;
-    this.getTableDate();
+  created () {
+    this.pagenum = 1
+    this.getTableDate()
   },
   methods: {
     // 添加用户->打开对话框
-    showDiaAddUser() {
-      this.dialogFormVisibleAdd = true;
+    showDiaAddUser () {
+      this.dialogFormVisibleAdd = true
     },
 
     // 搜索清空时获取所有用户
-    getAllUsers() {
-      this.getTableDate();
+    getAllUsers () {
+      this.getTableDate()
     },
 
     // 搜索用户
-    searchUser() {
-      this.pagenum = 1;
+    searchUser () {
+      this.pagenum = 1
       // 按照quert关键字搜索
-      this.getTableDate();
+      this.getTableDate()
     },
 
     // 分页相关的方法
 
-    handleSizeChange(val) {
-      console.log(`每页 ${val} 条`);
+    handleSizeChange (val) {
+      console.log(`每页 ${val} 条`)
       // 按照新pagesize发送请求
-      this.pagenum = 1;
-      this.pagesize = val;
-      this.getTableDate();
+      this.pagenum = 1
+      this.pagesize = val
+      this.getTableDate()
     },
     // 点击当前页，触发下面的方法
-    handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
+    handleCurrentChange (val) {
+      console.log(`当前页: ${val}`)
       // 按照新页码发送请求
-      this.pagenum = val;
-      this.getTableDate();
+      this.pagenum = val
+      this.getTableDate()
     },
 
     //   获取表格数据
-    async getTableDate() {
+    async getTableDate () {
       // 除了登录请求，其他请求都需要授权  Authorization
       // 发请求之前  设置请求头
       // {
       //   Authorization
       // }
 
-      const AUTH_TOKEN = localStorage.getItem("token");
-      this.$http.defaults.headers.common["Authorization"] = AUTH_TOKEN;
+      const AUTH_TOKEN = localStorage.getItem('token')
+      this.$http.defaults.headers.common['Authorization'] = AUTH_TOKEN
 
       const res = await this.$http.get(
         `users?query=${this.query}&pagenum=${this.pagenum}&pagesize=${
           this.pagesize
         }`
-      );
+      )
       //   console.log(res) // 接口文档有额外的说明
       const {
         data,
         // 有个msg被删了
         meta: { status }
-      } = res.data;
+      } = res.data
       if (status === 200) {
-        this.total = data.total;
-        this.list = data.users;
-        console.log(this.list);
+        this.total = data.total
+        this.list = data.users
+        console.log(this.list)
       }
     }
   }
-};
+}
 </script>
 
 <style>
