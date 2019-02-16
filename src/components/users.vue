@@ -20,7 +20,7 @@
     </el-row>
 
     <!-- 表格 -->
-    <el-table :data="list" style="width: 100%">
+    <el-table height="350px" :data="list" style="width: 100%">
       <el-table-column prop="id" label="#" width="80"></el-table-column>
       <el-table-column prop="username" label="姓名" width="120"></el-table-column>
       <el-table-column prop="email" label="邮箱" width="140"></el-table-column>
@@ -88,9 +88,17 @@ export default {
 
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`);
+      // 按照新pagesize发送请求
+      this.pagenum = 1;
+      this.pagesize = val;
+      this.getTableDate();
     },
+    // 点击当前页，触发下面的方法
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
+      // 按照新页码发送请求
+      this.pagenum = val;
+      this.getTableDate();
     },
 
     //   获取表格数据
