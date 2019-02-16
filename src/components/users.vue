@@ -40,9 +40,9 @@
       <el-table-column label="操作" width="200">
         <!--   下面template的属性 slot-scope="scope" -->
         <template>
-          <el-button plain="true" size="mini" type="primary" icon="el-icon-edit" circle></el-button>
-          <el-button plain="true" size="mini" type="danger" icon="el-icon-delete" circle></el-button>
-          <el-button plain="true" size="mini" type="success" icon="el-icon-check" circle></el-button>
+          <el-button plain size="mini" type="primary" icon="el-icon-edit" circle></el-button>
+          <el-button plain size="mini" type="danger" icon="el-icon-delete" circle></el-button>
+          <el-button plain size="mini" type="success" icon="el-icon-check" circle></el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -57,11 +57,12 @@
     <el-pagination
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
-      :current-page="currentPage4"
-      :page-sizes="[100, 200, 300, 400]"
-      :page-size="100"
+      :current-page="pagenum"
+      :page-sizes="[1, 2, 3, 4]"
+      :page-size="2"
       layout="total, sizes, prev, pager, next, jumper"
-      :total="400"
+      :total="total"
+      class="page"
     ></el-pagination>
   </el-card>
 </template>
@@ -72,7 +73,8 @@ export default {
     return {
       query: "",
       pagenum: 1,
-      pagesize: 10,
+      pagesize: 2,
+      total: -1,
       //   表格数据
       list: []
     };
@@ -82,6 +84,15 @@ export default {
     this.getTableDate();
   },
   methods: {
+    // 分页相关的方法
+
+    handleSizeChange(val) {
+      console.log(`每页 ${val} 条`);
+    },
+    handleCurrentChange(val) {
+      console.log(`当前页: ${val}`);
+    },
+
     //   获取表格数据
     async getTableDate() {
       // 除了登录请求，其他请求都需要授权  Authorization
@@ -105,6 +116,7 @@ export default {
         meta: { status }
       } = res.data;
       if (status === 200) {
+        this.total = data.total;
         this.list = data.users;
         console.log(this.list);
       }
@@ -122,5 +134,8 @@ export default {
 }
 .seartinput {
   width: 350px;
+}
+.page {
+  margin-top: 20px;
 }
 </style>
