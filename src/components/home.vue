@@ -105,30 +105,30 @@
 export default {
   // 页面加载之前设置
   // 必须先登录才能进入首页功能
-  beforeMount() {
-    if (!localStorage.getItem("token")) {
+  beforeMount () {
+    if (!localStorage.getItem('token')) {
       this.$router.push({
-        name: "login"
-      });
-      this.$message.warning("请先登录");
+        name: 'login'
+      })
+      this.$message.warning('请先登录')
     }
   },
-  mounted() {
-    console.log(1111);
+  mounted () {
+    console.log(1111)
   },
   methods: {
-    handleLoginout() {
+    handleLoginout () {
       //   1.清除token
-      localStorage.clear();
+      localStorage.clear()
       // 2.来到登录
       this.$router.push({
-        name: "login"
-      });
+        name: 'login'
+      })
       // 3.提示
-      this.$message.warning("退出成功");
+      this.$message.warning('退出成功')
     }
   }
-};
+}
 </script>
 
 <style>

@@ -45,9 +45,16 @@
       </el-table-column>
       <el-table-column label="操作" width="200">
         <!--   下面template的属性 slot-scope="scope" -->
-        <template>
+        <template slot-scope="scope">
           <el-button plain size="mini" type="primary" icon="el-icon-edit" circle></el-button>
-          <el-button plain size="mini" type="danger" icon="el-icon-delete" circle></el-button>
+          <el-button
+            @click="showMsgBoxDele(scope.row)"
+            plain
+            size="mini"
+            type="danger"
+            icon="el-icon-delete"
+            circle
+          ></el-button>
           <el-button plain size="mini" type="success" icon="el-icon-check" circle></el-button>
         </template>
       </el-table-column>
@@ -89,7 +96,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisibleAdd = false">取 消</el-button>
-        <el-button type="primary" @click="dialogFormVisibleAdd = false">确 定</el-button>
+        <el-button type="primary" @click="adduser">确 定</el-button>
       </div>
     </el-dialog>
   </el-card>
@@ -122,9 +129,54 @@ export default {
     this.getTableDate();
   },
   methods: {
+    // 删除功能--显示提示框
+    showMsgBoxDele(user) {
+      console.log(user);
+      this.$confirm("确定删除吗？", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(async () => {
+          // 用户id
+          const res = await this.$http.delete(`users/${user.id}`);
+          console.log(res);
+          const {
+            meta: { msg, status }
+          } = res.data;
+          if (status === 200) {
+            this.$message.success(msg);
+            this.pagenum = 1;
+            this.getTableDate();
+          }
+        })
+        .catch(() => {
+          this.$message.info("取消删除");
+        });
+    },
+
+    // 添加用户-发送请求
+    async adduser() {
+      // 发送请求
+      const res = await this.$http.post(`users`, this.formdata);
+      // console.log(res)
+      const {
+        // 删除了一个msg,
+        meta: { msg, status }
+      } = res.data;
+      if (status === 201) {
+        // 关闭对话框
+        this.dialogFormVisibleAdd = false;
+        // 更新表格
+        this.getTableDate();
+      }
+    },
+
     // 添加用户->打开对话框
     showDiaAddUser() {
       this.dialogFormVisibleAdd = true;
+      // 清空表单元素
+      this.formdata = {};
     },
 
     // 搜索清空时获取所有用户
@@ -176,7 +228,7 @@ export default {
       const {
         data,
         // 有个msg被删了
-        meta: { status }
+        meta: { msg, status }
       } = res.data;
       if (status === 200) {
         this.total = data.total;
