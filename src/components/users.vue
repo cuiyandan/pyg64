@@ -67,7 +67,14 @@
             icon="el-icon-delete"
             circle
           ></el-button>
-          <el-button plain size="mini" type="success" icon="el-icon-check" circle></el-button>
+          <el-button
+            @click="showDiaSetRole(scope.row)"
+            plain
+            size="mini"
+            type="success"
+            icon="el-icon-check"
+            circle
+          ></el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -130,6 +137,34 @@
         <el-button type="primary" @click="editUser()">确 定</el-button>
       </div>
     </el-dialog>
+
+    <!-- 分配角色--对话框 -->
+    <el-dialog title="分配角色" :visible.sync="dialogFormVisibleRole">
+      <el-form label-position="left" label-width="80px" :model="formdata">
+        <el-form-item label="用户名">{{formdata.username}}</el-form-item>
+
+        <el-form-item label="角色">
+          <!-- {{selectVal}} -->
+          <el-select v-model="selectVal" placeholder="请选择角色名">
+            <el-option disabled label="请选择" :value="-1"></el-option>
+
+            <!-- 5个角色都有自己的value -->
+            <el-option
+              v-for="(item,i) in roles"
+              :key="item.id"
+              :label="item.roleName"
+              :value="item.id"
+            ></el-option>
+
+            <!-- 将来获取角色名数据 -->
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisibleRole = false">取 消</el-button>
+        <el-button type="primary" @click="setRole()">确 定</el-button>
+      </div>
+    </el-dialog>
   </el-card>
 </template>
 
@@ -146,13 +181,19 @@ export default {
       // 对话框的默认数据
       dialogFormVisibleEdit: false,
       dialogFormVisibleAdd: false,
+      dialogFormVisibleRole: false,
       // 表单数据->发送post请求
       formdata: {
         username: "",
         password: "",
         email: "",
         mobile: ""
-      }
+      },
+      // 下拉框用的数据
+      selectVal: -1,
+      currUserId: -1,
+      //角色数组
+      roles: []
     };
   },
   //   获取首屏数据的方法调用
@@ -161,6 +202,39 @@ export default {
     this.getTableDate();
   },
   methods: {
+    // 分配角色--发送请求
+    async setRole() {
+      const res = await this.$http.put(`users/${this.currUserId}/role`, {
+        rid: this.selectVal
+      });
+      // console.log(res);
+      const {
+        meta: { msg, status }
+      } = res.data;
+      if (status === 200) {
+        // 关闭对话框
+        this.dialogFormVisibleRole = false;
+      }
+    },
+
+    // 分配角色--打开对话框
+    async showDiaSetRole(user) {
+      // this.currUsername = user.username;
+      this.formdata = user;
+      this.currUserId = user.id;
+      this.dialogFormVisibleRole = true;
+
+      //获取角色名称
+      const res = await this.$http.get(`roles`);
+      console.log(res);
+      this.roles = res.data.data;
+
+      // /给下拉框绑定value值
+      const res2 = await this.$http.get(`users/${user.id}`);
+      // console.log(res2);
+      this.selectVal = res2.data.data.rid;
+    },
+
     // 用户状态功能
     async changeseat(user) {
       // console.log(user);
