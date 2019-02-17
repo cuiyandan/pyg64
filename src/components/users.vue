@@ -46,7 +46,14 @@
       <el-table-column label="操作" width="200">
         <!--   下面template的属性 slot-scope="scope" -->
         <template slot-scope="scope">
-          <el-button plain size="mini" type="primary" icon="el-icon-edit" circle></el-button>
+          <el-button
+            @click="showDiaEditUser(scope.row)"
+            plain
+            size="mini"
+            type="primary"
+            icon="el-icon-edit"
+            circle
+          ></el-button>
           <el-button
             @click="showMsgBoxDele(scope.row)"
             plain
@@ -99,6 +106,25 @@
         <el-button type="primary" @click="adduser">确 定</el-button>
       </div>
     </el-dialog>
+
+    <!-- 编辑用户--对话框 -->
+    <el-dialog title="编辑用户" :visible.sync="dialogFormVisibleEdit">
+      <el-form label-position="left" label-width="80px" :model="formdata">
+        <el-form-item label="用户名">
+          <el-input disabled v-model="formdata.username"></el-input>
+        </el-form-item>
+        <el-form-item label="邮箱">
+          <el-input v-model="formdata.email"></el-input>
+        </el-form-item>
+        <el-form-item label="电话">
+          <el-input v-model="formdata.mobile"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisibleEdit = false">取 消</el-button>
+        <el-button type="primary" @click="editUser()">确 定</el-button>
+      </div>
+    </el-dialog>
   </el-card>
 </template>
 
@@ -113,6 +139,7 @@ export default {
       //   表格数据
       list: [],
       // 对话框的默认数据
+      dialogFormVisibleEdit: false,
       dialogFormVisibleAdd: false,
       // 表单数据->发送post请求
       formdata: {
@@ -129,6 +156,30 @@ export default {
     this.getTableDate();
   },
   methods: {
+    // 编辑功能--发送请求
+    async editUser() {
+      const res = await this.$http.put(
+        `users/${this.formdata.id}`,
+        this.formdata
+      );
+      console.log(res);
+      const {
+        meta: { msg, status }
+      } = res.data;
+      if (status === 200) {
+        // 关闭对话框
+        this.dialogFormVisibleEdit = false;
+        // 更新表格
+        this.getTableDate();
+      }
+    },
+    // 编辑功能-显示对话框
+    showDiaEditUser(user) {
+      // 获取当前用户的数据
+      this.formdata = user;
+      this.dialogFormVisibleEdit = true;
+    },
+
     // 删除功能--显示提示框
     showMsgBoxDele(user) {
       console.log(user);
