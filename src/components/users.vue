@@ -40,7 +40,12 @@
 
       <el-table-column label="用户状态" width="140">
         <template slot-scope="scope">
-          <el-switch v-model="scope.row.mg_state" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
+          <el-switch
+            @change="changeseat(scope.row)"
+            v-model="scope.row.mg_state"
+            active-color="#13ce66"
+            inactive-color="#ff4949"
+          ></el-switch>
         </template>
       </el-table-column>
       <el-table-column label="操作" width="200">
@@ -156,6 +161,15 @@ export default {
     this.getTableDate();
   },
   methods: {
+    // 用户状态功能
+    async changeseat(user) {
+      // console.log(user);
+      const res = await this.$http.put(
+        `users/${user.id}/state/${user.mg_state}`
+      );
+      console.log(res);
+    },
+
     // 编辑功能--发送请求
     async editUser() {
       const res = await this.$http.put(
