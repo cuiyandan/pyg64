@@ -9,17 +9,26 @@
           <!-- 行列布局 -->
           <el-row class="level1" v-for="(item1) in scope.row.children" :key="item1.id">
             <el-col :span="4">
-              <el-tag closable type="primary">{{item1.authName}}</el-tag>
+              <el-tag
+                @close="deleRights(scope.row,item1)"
+                closable
+                type="primary"
+              >{{item1.authName}}</el-tag>
               <i class="el-icon-arrow-right"></i>
             </el-col>
             <el-col :span="20">
               <el-row class="level2" v-for="(item2) in item1.children" :key="item2.id">
                 <el-col :span="4">
-                  <el-tag closable type="info">{{item2.authName}}</el-tag>
+                  <el-tag
+                    @close="deleRights(scope.row,item2)"
+                    closable
+                    type="info"
+                  >{{item2.authName}}</el-tag>
                   <i class="el-icon-arrow-right"></i>
                 </el-col>
                 <el-col :span="20">
                   <el-tag
+                    @close="deleRights(scope.row,item3)"
                     closable
                     type="danger"
                     v-for="(item3) in item2.children"
@@ -57,6 +66,15 @@
         </template>
       </el-table-column>
     </el-table>
+
+    <!-- 对话框 -->
+    <el-dialog title="分配权限" :visible.sync="dialogFormVisible">
+      <span>我是对话框</span>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+      </div>
+    </el-dialog>
   </el-card>
 </template>
 
@@ -64,14 +82,39 @@
 export default {
   data() {
     return {
-      roles: []
+      roles: [],
+      dialogFormVisible: false
     };
   },
   created() {
     this.getRoles();
   },
   methods: {
-    showDiaSetRights() {},
+    //   取消权限
+    async deleRights(role, rights) {
+      //   console.log(role, rights);
+      // 角色id---权限id
+      const res = await this.$http.delete(
+        `roles/${role.id}/rights/${rights.id}`
+      );
+      //   console.log(res);
+      const {
+        meta: { msg, status },
+        data
+      } = res.data;
+      if (status === 200) {
+        // 提示
+        this.$message.success(msg);
+        // 更新表格
+        // 会返回当前角色的剩余权限
+        // this.getRoles();
+        role.children = data;
+      }
+    },
+    // 分配权限中的打开对话框
+    showDiaSetRights() {
+      this.dialogFormVisible = true;
+    },
     async getRoles() {
       const res = await this.$http.get(`roles`);
       console.log(res);
