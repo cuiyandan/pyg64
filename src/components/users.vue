@@ -265,8 +265,11 @@ export default {
     // 编辑功能-显示对话框
     showDiaEditUser(user) {
       // 获取当前用户的数据
-      this.formdata = user;
+      // this.formdata = user;
       this.dialogFormVisibleEdit = true;
+      this.formdata.username = user.username;
+      this.formdata.email = user.email;
+      this.formdata.mobile = user.mobile;
     },
 
     // 删除功能--显示提示框
