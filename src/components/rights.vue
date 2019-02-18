@@ -7,7 +7,31 @@
 </template>
 
 <script>
-export default {};
+export default {
+  data() {
+    return {
+      list: []
+    };
+  },
+  // 获取首屏数据的方法
+  created() {
+    this.getTableData();
+  },
+  methods: {
+    async getTableData() {
+      const res = await this.$http.get(`rights/list`);
+      console.log("请求发起了");
+      console.log(res);
+      const {
+        data,
+        meta: { msg, status }
+      } = res.data;
+      if (status === 200) {
+        this.list = data;
+      }
+    }
+  }
+};
 </script>
 
 <style>

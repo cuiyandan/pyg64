@@ -8,10 +8,9 @@ import App from './App'
 import CusBread from '../src/components/cusBread.vue'
 import router from './router'
 import moment from 'moment'
-import axios from 'axios'
+import HttpServer from '@/http.js'
 
-axios.defaults.baseURL = 'http://localhost:8888/api/private/v1/'
-Vue.prototype.$http = axios
+Vue.use(HttpServer)
 
 Vue.use(ElementUI)
 
