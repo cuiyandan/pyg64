@@ -149,8 +149,9 @@
             <el-option disabled label="请选择" :value="-1"></el-option>
 
             <!-- 5个角色都有自己的value -->
+            <!-- 删掉了一个  i -->
             <el-option
-              v-for="(item,i) in roles"
+              v-for="(item) in roles"
               :key="item.id"
               :label="item.roleName"
               :value="item.id"
