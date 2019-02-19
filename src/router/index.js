@@ -6,34 +6,47 @@ import Home from '../components/home.vue'
 import Users from '../components/users.vue'
 import Rights from '../components/rights.vue'
 import Roles from '../components/roles.vue'
+import Goodslist from '../components/goodslist.vue'
+import Goodsadd from '../components/goodsadd.vue'
 
 Vue.use(Router)
 
 const router = new Router({
-  routes: [
+  routes: [{
+    path: '/',
+    name: 'home',
+    component: Home,
+    children: [{
+      name: 'users',
+      path: '/users',
+      component: Users
+    },
     {
-      path: '/',
-      name: 'home',
-      component: Home,
-      children: [{
-        name: 'users',
-        path: '/users',
-        component: Users
-      }, {
-        name: 'rights',
-        path: '/rights',
-        component: Rights
-      }, {
-        name: 'roles',
-        path: '/roles',
-        component: Roles
-      }]
-    }, {
-      name: 'login',
-      path: '/login',
-      component: Login
+      name: 'rights',
+      path: '/rights',
+      component: Rights
+    },
+    {
+      name: 'roles',
+      path: '/roles',
+      component: Roles
+    },
+    {
+      name: 'goods',
+      path: '/goods',
+      component: Goodslist
+    },
+    {
+      name: 'goodsadd',
+      path: '/goodsadd',
+      component: Goodsadd
     }
-  ]
+    ]
+  }, {
+    name: 'login',
+    path: '/login',
+    component: Login
+  }]
 })
 
 // 路由导航守卫
