@@ -71,6 +71,7 @@
     <el-dialog title="分配权限" :visible.sync="dialogFormVisible">
       <!-- 树形结构的数据源 -->
       <el-tree
+        ref="treeDom"
         :data="treelist"
         show-checkbox
         node-key="id"
@@ -80,7 +81,7 @@
       ></el-tree>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+        <el-button type="primary" @click="setRights()">确 定</el-button>
       </div>
     </el-dialog>
   </el-card>
@@ -99,15 +100,43 @@ export default {
       defaultProps: {
         label: "authName",
         children: "children"
-      }
+      },
+      currRoleId: -1
     };
   },
   created() {
     this.getRoles();
   },
   methods: {
+    // 分配权限，发起请求
+    async setRights() {
+      // 获取全选节点id
+      const arr1 = this.$refs.treeDom.getCheckedKeys();
+      // console.log(arr1);
+      // 获取半选节点id   getHalfCheckedKeys
+      const arr2 = this.$refs.treeDom.getHalfCheckedKeys();
+      // console.log(arr2);
+
+      const arr = [...arr1, ...arr2];
+      // console.log(arr);
+      //分割数组
+      const res = await this.$http.post(`roles/${this.currRoleId}/rights`, {
+        rids: arr.join(",")
+      });
+      // console.log(res);
+      const {
+        meta: { msg, status },
+        data
+      } = res.data;
+      if (status === 200) {
+        this.dialogFormVisible = false;
+        this.getRoles();
+      }
+    },
+
     // 分配权限中的打开对话框
     async showDiaSetRights(role) {
+      this.currRoleId = role.id;
       //获取数据
       const res = await this.$http.get(`rights/tree`);
       const {
