@@ -52,12 +52,7 @@ export default {
   // 页面加载之前设置
   // 必须先登录才能进入首页功能
   beforeMount() {
-    if (!localStorage.getItem("token")) {
-      this.$router.push({
-        name: "login"
-      });
-      this.$message.warning("请先登录");
-    }
+    // 判断token有没有代码放到另外位置
   },
   mounted() {
     console.log(1111);
