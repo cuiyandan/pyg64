@@ -15,44 +15,44 @@
 
 <script>
 export default {
-  data () {
+  data() {
     return {
       formdata: {
-        username: '',
-        password: ''
+        username: "",
+        password: ""
       }
-    }
+    };
   },
   methods: {
     // 登录请求
-    async handleLogin () {
+    async handleLogin() {
       //   前提  服务器开启状态
       // 服务器支持跨域
       // ES7 async  await
-      const res = await this.$http.post(`login`, this.formdata)
+      const res = await this.$http.post(`login`, this.formdata);
       // console.log(res)
       const {
         data: {
-          data: {token},
+          data,
           meta: { msg, status }
         }
-      } = res
+      } = res;
 
       if (status === 200) {
         // 把正确用户的token保存起来
         // set存值
-        localStorage.setItem('token', token)
+        localStorage.setItem("token", data.token);
 
         // 测试get取值
         // const a = localStorage.getItem('token')
         // console.log(a)
         // 渲染home组件 home.vue 改标识 js编程导航
         this.$router.push({
-          name: 'home'
-        })
+          name: "home"
+        });
       } else {
         // 提示框
-        this.$message.error(msg)
+        this.$message.error(msg);
       }
 
       // .then(res => {
@@ -76,7 +76,7 @@ export default {
       // })
     }
   }
-}
+};
 </script>
 
 <style>
