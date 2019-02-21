@@ -101,8 +101,8 @@ export default {
         goods_weight: "",
         goods_introduce: "",
         goods_cat: "",
-        pics: "",
-        attrs: ""
+        pics: [],
+        attrs: []
       },
       //   级联使用的数据
       options: [],
@@ -126,15 +126,59 @@ export default {
   },
   methods: {
     // 添加商品
-    addGoods() {},
+    async addGoods() {
+      // 处理goods_cat
+      this.form.goods_cat = this.selectedOptions.join(",");
+
+      //动态参数数组
+      const arr1 = this.arrDy.map(item => {
+        return { attr_id: item.attr_id, attr_value: item.attr_vals };
+      });
+      // console.log(arr1);
+
+      //静态参数数组
+      const arr2 = this.arrStatic.map(item => {
+        return { attr_id: item.attr_id, attr_value: item.attr_vals };
+      });
+      // console.log(arr2);
+      this.form.attrs = [...arr1, ...arr2];
+      // console.log(this.form.attrs);
+
+      const res = await this.$http.post(`goods`, this.form);
+      // console.log(res);
+      const {
+        meta: { msg, status },
+        data
+      } = res.data;
+      if (status === 201) {
+        // 提示
+        this.$message.success(msg);
+        //回到列表
+        this.$router.push({
+          name: "goods"
+        });
+      } else {
+        console.log(msg);
+      }
+    },
     // 图片上传相关方法
     handleRemove(file, fileList) {
       // console.log("remove---");
-      console.log(file);
+      // console.log(file);
+      const Index = this.form.pics.findIndex(item => {
+        // console.log(item);
+        return item.pic === file.response.data.tmp_path;
+      });
+      this.form.pics.splice(Index, 1);
+      // console.log(this.form.pics);
     },
     handleSuccess(response, file, fileList) {
       // console.log("chenggong");
-      console.log(response);
+      // console.log(response);
+      this.form.pics.push({
+        pic: response.data.tmp_path
+      });
+      // console.log(this.form.pics);
     },
     // 点击tab触发
     async changeTab() {
