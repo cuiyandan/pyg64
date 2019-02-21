@@ -69,14 +69,27 @@
             </el-upload>
           </el-form-item>
         </el-tab-pane>
-        <el-tab-pane name="5" label="商品内容">商品内容</el-tab-pane>
+        <el-tab-pane name="5" label="商品内容">
+          <el-form-item>
+            <el-button @click="addGoods()">添加商品</el-button>
+            <quill-editor class="lifff" v-model="form.goods_introduce"></quill-editor>
+          </el-form-item>
+        </el-tab-pane>
       </el-tabs>
     </el-form>
   </el-card>
 </template>
 
 <script>
+import "quill/dist/quill.core.css";
+import "quill/dist/quill.snow.css";
+import "quill/dist/quill.bubble.css";
+
+import { quillEditor } from "vue-quill-editor";
 export default {
+  components: {
+    quillEditor
+  },
   data() {
     return {
       active: "1",
@@ -112,6 +125,8 @@ export default {
     this.getGoodsCate();
   },
   methods: {
+    // 添加商品
+    addGoods() {},
     // 图片上传相关方法
     handleRemove(file, fileList) {
       // console.log("remove---");
@@ -201,5 +216,9 @@ export default {
 .form {
   height: 350px;
   overflow: auto;
+}
+.ql-editor,
+.ql-blank {
+  min-height: 200px;
 }
 </style>
