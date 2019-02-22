@@ -141,7 +141,7 @@ export default {
             attr_vals: obj.attr_vals.join(",")
           }
         );
-        console.log(res);
+        // console.log(res);
       }
       this.inputVisible = false;
       this.inputValue = "";
@@ -184,8 +184,8 @@ export default {
                 ? []
                 : item.attr_vals.trim().split(",");
           });
-          console.log("动态参数数组--");
-          console.log(this.arrDy);
+          // console.log("动态参数数组--");
+          // console.log(this.arrDy);
         }
       }
 
@@ -199,8 +199,8 @@ export default {
         } = res.data;
         if (status === 200) {
           this.arrStatic = data;
-          console.log("静态参数数组--");
-          console.log(this.arrStatic);
+          // console.log("静态参数数组--");
+          // console.log(this.arrStatic);
         }
       }
     },
